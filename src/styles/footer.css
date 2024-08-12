@@ -45,11 +45,12 @@
 
 .footer-content p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: bold;
 }
 
 .footer-content address {
+  font-style: normal;
   font-size: 0.9rem;
   margin: 20px 0 0;
   text-align: left;
@@ -58,6 +59,7 @@
 }
 
 .footer-links {
+  font-size: 1rem;
   display: flex;
   justify-content: center;
   margin-top: 30px;
