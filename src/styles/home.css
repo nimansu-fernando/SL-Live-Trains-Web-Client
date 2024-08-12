@@ -1,0 +1,18 @@
+.train-card-container {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-around; 
+    padding: 20px;
+  }
+  
+  .train-card-container .TrainCard {
+    flex: 1 1 300px; 
+    margin: 10px; 
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+    color: #333;
+    text-align: center;
+  }
