@@ -27,9 +27,11 @@ const TrainCard = ({train}) => {
                 <span className="days">{train.trainNo} - {train.type}</span>
             </div>
             <div className="train-details">
-                <span className="train-startEnd">{train.startTime}</span>                
-                <span className="train-startEnd">● ············································································································································································································· ●</span>
-                <span className="train-startEnd">{train.endTime}</span>
+                <span className="train-start">{train.startTime}</span>
+                <span className="train-lineBetween">
+                    <span className="line"></span>
+                </span>              
+                <span className="train-end">{train.endTime}</span>
             </div>
             <div className="train-details">
                 <span className="train-startEnd">{train.startStation}</span>

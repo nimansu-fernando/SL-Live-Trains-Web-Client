@@ -38,9 +38,37 @@
     font-weight: bold;
 }
 
-.train-startEnd {
+.train-start {
     font-size: 1rem;
     font-weight: bold;
+    margin-right: 20px;
+}
+
+.train-end {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.train-lineBetween {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    position: relative;
+}
+
+.train-lineBetween::before,
+.train-lineBetween::after {
+    content: '●'; 
+    display: block;
+    margin: 0 10px;
+}
+
+.train-lineBetween .line {
+    flex: 1;
+    height: 1px;
+    background-color: #ccc; 
+    margin: 0;
 }
 
 .start-time {
