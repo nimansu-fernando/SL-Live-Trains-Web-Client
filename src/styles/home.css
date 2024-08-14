@@ -27,3 +27,58 @@
     color: #333;
     text-align: center;
   }
+
+  /* Responsive Design */
+@media (max-width: 768px) {
+  .home-page {
+    padding: 15px; 
+    background-size: cover; 
+    background-position: top center;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-page {
+    padding: 10px; 
+    background-size: cover; 
+    background-position: top center;
+  }
+}
+
+@media (max-width: 1200px) {
+  .train-card-container .TrainCard {
+    flex: 1 1 45%;
+    max-width: 90%; 
+    margin: auto; 
+  }
+}
+
+@media (max-width: 768px) {
+  .train-card-container .TrainCard {
+    flex: 1 1 100%;
+    max-width: 90%; 
+    margin: 10px 0; 
+  }
+
+  .train-card-container {
+    padding: 10px;
+  }
+  
+  .home-page {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  .train-card-container {
+    flex-direction: column;
+  }
+
+  .home-page {
+    padding: 5px;
+  }
+}
