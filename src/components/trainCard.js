@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import trainIcon from '../assets/train-icon.png';
+import trainIcon from '../assets/train.png';
 import '../styles/trainCard.css'
 
 const TrainCard = ({train}) => {

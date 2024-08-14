@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/header.css';
-import logo from '../assets/Sri_Lanka_Railway_logo.png';
+import logo from '../assets/SL-Live-Trains-Logo.png';
 
 const Header = () => {
   return (
