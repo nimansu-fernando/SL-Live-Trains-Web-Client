@@ -9,6 +9,13 @@ const TrainCard = ({train}) => {
     setIsExpanded(!isExpanded);
   };
 
+  const convertTo12HourFormat = (time) => {
+    const [hour, minute] = time.split(':');
+    const suffix = hour >= 12 ? 'PM' : 'AM';
+    const hour12 = hour % 12 || 12;
+    return `${hour12}:${minute} ${suffix}`;
+  };
+
   return (
     <div className="train-card">
         <div className="train-icon">
@@ -17,7 +24,7 @@ const TrainCard = ({train}) => {
         <div className="train-info">
             <div className="train-header">
                 <div className="train-time">
-                    <span className="start-time">{train.startTime}</span>
+                    <span className="start-time">{convertTo12HourFormat(train.startTime)}</span>
                     <span className="route">{train.route}</span>
                     <span className="train-name">({train.trainName})</span>
                 </div>
@@ -27,11 +34,11 @@ const TrainCard = ({train}) => {
                 <span className="days">{train.trainNo} - {train.type}</span>
             </div>
             <div className="train-details">
-                <span className="train-start">{train.startTime}</span>
+                <span className="train-start">{convertTo12HourFormat(train.startTime)}</span>
                 <span className="train-lineBetween">
                     <span className="line"></span>
                 </span>              
-                <span className="train-end">{train.endTime}</span>
+                <span className="train-end">{convertTo12HourFormat(train.endTime)}</span>
             </div>
             <div className="train-details">
                 <span className="train-startEnd">{train.startStation}</span>
