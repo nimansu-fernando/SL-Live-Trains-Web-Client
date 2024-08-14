@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="container">
         <div className="footer-content">
           <div className="footer-top">
-            <p>© 2022 Sri Lanka Railways (SLR). All rights Reserved Sri Lanka Railways</p>
+            <p>© 2024 Sri Lanka Live Trains (SLLT). All rights Reserved Sri Lanka Live Trains</p>
             <div className="footer-logos">
               <img src={SlEmblem} alt="SL Emblem" className="footer-logo" />
               <div className="separator"></div>
