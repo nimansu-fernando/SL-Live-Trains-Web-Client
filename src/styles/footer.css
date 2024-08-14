@@ -3,6 +3,8 @@
   color: #ccc; 
   padding: 40px 0; 
   margin-top: 40px;
+  flex-wrap: wrap;
+  overflow-x: hidden; 
 }
 
 .container {
@@ -10,6 +12,7 @@
   max-width: 1200px; 
   margin: 0 auto; 
   padding: 0 20px; 
+  box-sizing: border-box; 
 }
 
 .footer-content {
@@ -24,6 +27,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  box-sizing: border-box; 
 }
 
 .footer-logos {
@@ -64,6 +68,7 @@
   display: flex;
   justify-content: center;
   margin-top: 30px;
+  flex-wrap: wrap; 
 }
 
 .footer-links a {
@@ -82,6 +87,7 @@
   .footer-top {
     flex-direction: column;
     align-items: center; 
+    padding: 0 10px; 
   }
 
   .footer-logos {
