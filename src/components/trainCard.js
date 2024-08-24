@@ -7,13 +7,31 @@ const TrainCard = ({train}) => {
 
   const toggleStations = () => {
     setIsExpanded(!isExpanded);
-  };
+  }; 
 
   const convertTo12HourFormat = (time) => {
     const [hour, minute] = time.split(':');
     const suffix = hour >= 12 ? 'PM' : 'AM';
     const hour12 = hour % 12 || 12;
     return `${hour12}:${minute} ${suffix}`;
+  };
+
+  const convertIsoTo12HourTime = (isoString) => {
+    const date = new Date(isoString);
+    
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    hours = hours % 12 || 12; 
+    
+    return `${hours}:${minutes} ${ampm}`;
+  };
+
+  const convertDuration = (minutes) => {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours}H ${remainingMinutes}M`;
   };
 
   return (
@@ -30,7 +48,7 @@ const TrainCard = ({train}) => {
                 </div>
             </div>
             <div className="train-details">
-                <span className="days">{train.frequency}</span>
+                <span className="days">{handleFrequencies(train.frequency)}</span>
                 <span className="days">{train.trip_number} - {train.type}</span>
             </div>
             <div className="train-details">
@@ -42,7 +60,7 @@ const TrainCard = ({train}) => {
             </div>
             <div className="train-details">
                 <span className="train-startEnd">{train.start_station}</span>
-                <span className="duration">{train.duration}</span>
+                <span className="duration">{convertDuration(train.duration)}</span>
                 <span className="train-startEnd">{train.end_station}</span>
             </div>
             <div className="train-details">
@@ -55,8 +73,8 @@ const TrainCard = ({train}) => {
                 <div className="last-update-box">
                     <div className="last-update">
                     <span className="update-label">Last Update:</span>
-                    <span className="update-value">{train.geoLocation}</span>
-                    <span className="update-value">{train.timestamp}</span>
+                    <span className="update-value">{train.geoLocation}  |</span>
+                    <span className="update-value">{convertIsoTo12HourTime(train.timestamp)}</span>
                     </div>
                 </div>
             </div>
