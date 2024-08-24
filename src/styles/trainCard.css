@@ -1,0 +1,310 @@
+.train-card {
+    width: 100%;
+    max-width: 1200px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+    background-color: #ffffffce;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex; 
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.train-icon {
+    margin-right: 16px; 
+}
+
+.train-icon img {
+    width: 40px;
+    height: 40px;
+}
+
+.train-info {
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.train-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.train-time {
+    font-size: 1.2rem;    
+    margin-right: 16px; 
+    font-weight: bold;
+}
+
+.highlight {
+    font-weight: bold;
+    color: rgb(142, 0, 0); 
+}
+
+.train-start {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.train-end {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.train-lineBetween {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    position: relative;
+}
+
+.train-lineBetween::before,
+.train-lineBetween::after {
+    content: '●'; 
+    display: block;
+    margin: 0 10px;
+}
+
+.train-lineBetween .line {
+    flex: 1;
+    height: 1px;
+    background-color: #a8a8a8; 
+    margin: 0;
+}
+
+.start-time {
+    font-size: 1.2rem;
+    margin-right: 16px; 
+    color: #000000;
+}
+
+.route {
+    font-size: 1.2rem;
+    margin-right: 5px;
+    color: #000000;
+}
+
+.train-name {
+    font-size: 1.2rem;
+    color: #000000;
+}
+
+.train-details {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #474747;
+    flex-wrap: wrap;
+}
+
+.train-footer {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.last-update-box {
+    background-color: #d4edda; 
+    padding: 10px;
+    border-radius: 5px; 
+    border: 1px solid #c3e6cb; 
+}
+
+.last-update {
+    display: flex;
+    align-items: center;
+}
+
+.last-update .update-label {
+    font-size: 1rem; 
+    color: black;
+    font-weight: bold;
+}
+
+.last-update .update-value {
+    font-size: 1rem; 
+    color: green;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.stopping-stations-btn {
+    background-color: #333;
+    color: #fff;
+    height: 30px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.stopping-stations {
+    margin-top: 16px;
+    padding: 8px;
+    border-top: 1px solid #ddd;
+}
+
+.stopping-stations ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.stopping-stations li {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr ; 
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    align-items: center;
+}
+
+.station-name {
+    grid-column-start: 2; 
+    justify-self: start; 
+    color: #1E3A8A; 
+}
+
+.time {
+    font-weight: normal; 
+    font-size: 1.3em;
+    margin-left: 20px;
+}
+
+.station-arrival {
+    grid-column-start: 3; 
+    justify-self: start; 
+    font-weight: bold;
+    font-size: 0.8em;
+    color: #1E3A8A;
+}
+
+.station-departure {
+    grid-column-start: 4; 
+    justify-self: start; 
+    font-weight: bold;
+    font-size: 0.8em;
+    color: #1E3A8A;
+}
+
+@media (max-width: 768px) {
+    .train-card {
+        width: 100%;
+        max-width: 90%; 
+        margin: 10px 0; 
+    }
+
+    .train-icon {
+        margin-right: 0; 
+        margin-bottom: 16px; 
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+    }
+
+    .train-icon img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .train-info {
+        width: 100%; 
+    }
+
+    .train-header {
+        justify-content: center; 
+        text-align: center; 
+    }
+
+    .train-time, .start-time, .route, .train-name {
+        font-size: 1rem; 
+    }
+
+    .train-details {
+        justify-content: space-between;
+        text-align: center; 
+        margin-top: 10px; 
+    }
+
+    .train-footer {
+        flex-direction: column;  
+        justify-content: center; 
+        text-align: center; 
+    }
+
+    .stopping-stations-btn {
+        margin-bottom: 16px; 
+    }
+}
+
+@media (max-width: 1200px) {
+    .stopping-stations li {
+        grid-template-columns: repeat(4, 1fr); 
+    }
+
+    .station-name {
+        grid-column-start: 1; 
+    }
+
+    .station-arrival {
+        grid-column-start: 2; 
+    }
+
+    .station-departure {
+        grid-column-start: 3; 
+    }
+}
+
+@media (max-width: 900px) {
+    .stopping-stations li {
+        grid-template-columns: repeat(3, 1fr); 
+    }
+
+    .station-name {
+        grid-column-start: 1; 
+    }
+
+    .station-arrival {
+        grid-column-start: 2; 
+    }
+
+    .station-departure {
+        grid-column-start: 3; 
+    }
+}
+
+@media (max-width: 600px) {
+    .stopping-stations li {
+        grid-template-columns: 1fr; 
+        grid-template-areas:
+            "name"
+            "arrival"
+            "departure"; 
+    }
+
+    .station-name {
+        grid-area: name; 
+    }
+
+    .station-arrival {
+        grid-area: arrival; 
+        font-size: 0.8em; 
+    }
+
+    .station-departure {
+        grid-area: departure; 
+        font-size: 0.8em; 
+    }
+
+    .time {
+        font-size: 1em; 
+    }
+}

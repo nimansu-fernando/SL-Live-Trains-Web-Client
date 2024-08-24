@@ -1,0 +1,127 @@
+.footer {
+  background-color: #0a285d; 
+  color: #ccc; 
+  padding: 40px 0; 
+  margin-top: 0px;
+  flex-wrap: wrap;
+  overflow-x: hidden; 
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 0 20px; 
+  box-sizing: border-box; 
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; 
+  justify-content: space-between;
+}
+
+.footer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box; 
+}
+
+.footer-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+
+.footer-logo {
+  height: 40px;
+  width: auto;
+  margin: 0 10px; 
+}
+
+.separator {
+  height: 40px;
+  border-left: 1px solid #7d7d7d;
+  margin: 0 10px;
+  display: flex;
+  align-items: center;
+}
+
+.footer-content p {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.footer-content address {
+  font-size: 0.9rem;
+  margin: 20px 0 0;
+  text-align: left;
+  line-height: 1.5;
+  color: white;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  flex-wrap: wrap; 
+}
+
+.footer-links a {
+  margin: 0 10px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+  .footer-top {
+    flex-direction: column;
+    align-items: center; 
+    padding: 0 10px; 
+  }
+
+  .footer-logos {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .separator {
+    display: none; 
+  }
+
+  .footer-content address {
+    text-align: center;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .footer-links a {
+    margin: 5px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-content address {
+    font-size: 0.8rem;
+    text-align: center;
+  }
+
+  .footer-top p {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
