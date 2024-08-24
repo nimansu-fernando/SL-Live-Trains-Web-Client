@@ -6,7 +6,8 @@
   background-repeat: no-repeat;
   min-height: 100vh; 
   padding: 20px; 
-  box-sizing: border-box; 
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .train-card-container {
@@ -19,6 +20,29 @@
   .train-card-container .TrainCard {
     flex: 1 1 300px; 
     margin: 10px; 
+  }
+
+  .live-map-button {
+    background-color: #2e2e2e;
+    color: #fff;
+    border: none;
+    padding: 10px 40px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 20px auto;
+    display: block;
+  }
+
+  .icon-image {
+    width: 24px; 
+    height: 24px;
+    margin-right: 8px; 
+  }
+  
+  .live-map-button:hover {
+    background-color: #555;
   }
   
   h1 {
