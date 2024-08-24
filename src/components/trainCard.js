@@ -24,26 +24,26 @@ const TrainCard = ({train}) => {
         <div className="train-info">
             <div className="train-header">
                 <div className="train-time">
-                    <span className="start-time">{convertTo12HourFormat(train.startTime)}</span>
-                    <span className="route">{train.route}</span>
-                    <span className="train-name">({train.trainName})</span>
+                    <span className="start-time">{convertTo12HourFormat(train.start_time)}</span>
+                    <span className="route">{train.route_name}</span>
+                    <span className="train-name">({train.train_name})</span>
                 </div>
             </div>
             <div className="train-details">
-                <span className="days">{train.days}</span>
-                <span className="days">{train.trainNo} - {train.type}</span>
+                <span className="days">{train.frequency}</span>
+                <span className="days">{train.trip_number} - {train.type}</span>
             </div>
             <div className="train-details">
-                <span className="train-start">{convertTo12HourFormat(train.startTime)}</span>
+                <span className="train-start">{convertTo12HourFormat(train.start_time)}</span>
                 <span className="train-lineBetween">
                     <span className="line"></span>
                 </span>              
-                <span className="train-end">{convertTo12HourFormat(train.endTime)}</span>
+                <span className="train-end">{convertTo12HourFormat(train.end_time)}</span>
             </div>
             <div className="train-details">
-                <span className="train-startEnd">{train.startStation}</span>
+                <span className="train-startEnd">{train.start_station}</span>
                 <span className="duration">{train.duration}</span>
-                <span className="train-startEnd">{train.endStation}</span>
+                <span className="train-startEnd">{train.end_station}</span>
             </div>
             <div className="train-details">
             <span className="duration"></span>
@@ -55,19 +55,25 @@ const TrainCard = ({train}) => {
                 <div className="last-update-box">
                     <div className="last-update">
                     <span className="update-label">Last Update:</span>
-                    <span className="update-value">{train.lastUpdateStation}</span>
-                    <span className="update-value">{train.lastUpdateTime}</span>
+                    <span className="update-value">{train.geoLocation}</span>
+                    <span className="update-value">{train.timestamp}</span>
                     </div>
                 </div>
             </div>
             {isExpanded && (
-            <div className="stopping-stations">
-                <ul>
-                {train.stoppingStations.map((station, index) => (
-                    <li key={index}>{station}</li>
-                ))}
-                </ul>
-            </div>
+                <div className="stopping-stations">
+                    <ul>
+                    {train.stopping_stations.map((station, index) => (
+                        <li key={index}>
+                        <strong>{station.station_name}</strong>
+                        <br />
+                        Arrival: {station.arrival_time}
+                        <br />
+                        Departure: {station.departure_time}
+                        </li>
+                    ))}
+                    </ul>
+                </div>
             )}
         </div>
     </div>
