@@ -40,6 +40,11 @@
     font-weight: bold;
 }
 
+.highlight {
+    font-weight: bold;
+    color: rgb(142, 0, 0); 
+}
+
 .train-start {
     font-size: 1rem;
     font-weight: bold;
