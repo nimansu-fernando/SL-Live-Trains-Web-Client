@@ -8,7 +8,7 @@ const Home = () => {
   useEffect(() => {
     const fetchTrainData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/location/api/locations');
+        const response = await fetch('http://localhost:3000/api/location/train-locations/data');
         if (response.ok) {
           const data = await response.json();
           setTrains(data);

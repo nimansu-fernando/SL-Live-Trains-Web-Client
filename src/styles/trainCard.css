@@ -156,10 +156,43 @@
 .stopping-stations ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .stopping-stations li {
-    padding: 4px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr ; 
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    align-items: center;
+}
+
+.station-name {
+    grid-column-start: 2; 
+    justify-self: start; 
+    color: #1E3A8A; 
+}
+
+.time {
+    font-weight: normal; 
+    font-size: 1.3em;
+    margin-left: 20px;
+}
+
+.station-arrival {
+    grid-column-start: 3; 
+    justify-self: start; 
+    font-weight: bold;
+    font-size: 0.8em;
+    color: #1E3A8A;
+}
+
+.station-departure {
+    grid-column-start: 4; 
+    justify-self: start; 
+    font-weight: bold;
+    font-size: 0.8em;
+    color: #1E3A8A;
 }
 
 @media (max-width: 768px) {
@@ -209,5 +242,69 @@
 
     .stopping-stations-btn {
         margin-bottom: 16px; 
+    }
+}
+
+@media (max-width: 1200px) {
+    .stopping-stations li {
+        grid-template-columns: repeat(4, 1fr); 
+    }
+
+    .station-name {
+        grid-column-start: 1; 
+    }
+
+    .station-arrival {
+        grid-column-start: 2; 
+    }
+
+    .station-departure {
+        grid-column-start: 3; 
+    }
+}
+
+@media (max-width: 900px) {
+    .stopping-stations li {
+        grid-template-columns: repeat(3, 1fr); 
+    }
+
+    .station-name {
+        grid-column-start: 1; 
+    }
+
+    .station-arrival {
+        grid-column-start: 2; 
+    }
+
+    .station-departure {
+        grid-column-start: 3; 
+    }
+}
+
+@media (max-width: 600px) {
+    .stopping-stations li {
+        grid-template-columns: 1fr; 
+        grid-template-areas:
+            "name"
+            "arrival"
+            "departure"; 
+    }
+
+    .station-name {
+        grid-area: name; 
+    }
+
+    .station-arrival {
+        grid-area: arrival; 
+        font-size: 0.8em; 
+    }
+
+    .station-departure {
+        grid-area: departure; 
+        font-size: 0.8em; 
+    }
+
+    .time {
+        font-size: 1em; 
     }
 }

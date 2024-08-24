@@ -27,9 +27,8 @@ const TrainCard = ({ train }) => {
       }
     });
   
-    const today = new Date().toLocaleDateString('en-US', { weekday: 'short' }); // Get today's day (e.g., "Mon")
+    const today = new Date().toLocaleDateString('en-US', { weekday: 'short' }); 
 
-    // Convert the set to an array and map over it to highlight today's day
     const daysArray = Array.from(daysSet).map(day => 
       day === today ? `<span class="highlight">${day}</span>` : day
     );
@@ -69,7 +68,7 @@ const TrainCard = ({ train }) => {
           <div className="train-time">
             <span className="start-time">{convertTo12HourFormat(train.start_time)}</span>
             <span className="route">{train.route_name}</span>
-            <span className="train-name">({train.train_name})</span>
+            {train.train_name && <span className="train-name">({train.train_name})</span>}
           </div>
         </div>
         <div className="train-details">
@@ -103,21 +102,23 @@ const TrainCard = ({ train }) => {
             </div>
           </div>
         </div>
-        {isExpanded && (
-          <div className="stopping-stations">
-            <ul>
-              {train.stopping_stations.map((station, index) => (
-                <li key={index}>
-                  <strong>{station.station_name}</strong>
-                  <br />
-                  Arrival: {station.arrival_time}
-                  <br />
-                  Departure: {station.departure_time}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        {isExpanded && train.stopping_stations && (
+  <div className="stopping-stations">
+    <ul>
+      {train.stopping_stations.map((station, index) => (
+        <li key={index}>
+          <span className="station-name">{station.station_name || 'Unknown Station'}</span>
+          <span className="station-arrival">
+            Arrival: <span className="time">{station.arrival_time ? convertTo12HourFormat(station.arrival_time) : 'N/A'}</span>
+          </span>
+          <span className="station-departure">
+            Departure: <span className="time">{station.departure_time ? convertTo12HourFormat(station.departure_time) : 'N/A'}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
       </div>
     </div>
   );
