@@ -102,9 +102,28 @@
   height: 38px; 
 }
 
-
 .search-button:hover {
     background-color: #0056b3;
+}
+
+.pagination-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.pagination-container .page-number {
+  display: inline-block;
+  margin: 0 5px; /* Add space between page numbers */
+  padding: 8px 12px;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-container .page-number:hover {
+  background-color: #007bff;
+  color: white;
 }
 
   /* Responsive Design */
