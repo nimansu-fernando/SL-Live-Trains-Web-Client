@@ -17,8 +17,9 @@ const Home = () => {
   const [publicToken, setPublicToken] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [searchParams, setSearchParams] = useState({ startStation: '', endStation: '' });
 
-  // fetch current token
+  // Fetch current token
   const fetchToken = useCallback(async () => {
     try {
       const response = await fetch('http://localhost:3000/api/public-token');
@@ -32,14 +33,14 @@ const Home = () => {
     }
   }, []);
 
-  // fetch token refresh
+  // Fetch token refresh
   const fetchWithTokenRefresh = useCallback(async (url, options = {}) => {
     try {
       const response = await fetch(url, options);
       if (response.status === 401 || response.status === 403) {
-        await fetchToken(); 
-        options.headers['x-public-token'] = publicToken; 
-        const retryResponse = await fetch(url, options); 
+        await fetchToken();
+        options.headers['x-public-token'] = publicToken;
+        const retryResponse = await fetch(url, options);
         if (!retryResponse.ok) {
           throw new Error(`HTTP error on retry! Status: ${retryResponse.status}`);
         }
@@ -55,23 +56,30 @@ const Home = () => {
     }
   }, [fetchToken, publicToken]);
 
-    const fetchTrainData = useCallback(async () => {
+  // Fetch train data
+  const fetchTrainData = useCallback(async () => {
     try {
       if (!publicToken) return;
-      const data = await fetchWithTokenRefresh('http://localhost:3000/api/v1/location/train-locations/data', {
+      const url = isSearching
+        ? `http://localhost:3000/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}`
+        : 'http://localhost:3000/api/v1/location/train-locations/data';
+
+      const data = await fetchWithTokenRefresh(url, {
         headers: {
           'x-public-token': publicToken
         }
       });
-      if (!isSearching) {
-        setTrains(data); 
+      if (isSearching) {
+        setSearchResults(data);
+      } else {
+        setTrains(data);
       }
     } catch (error) {
       console.error('Error fetching train data:', error.message);
     }
-  }, [publicToken, fetchWithTokenRefresh, isSearching]);
+  }, [publicToken, fetchWithTokenRefresh, isSearching, startStation, endStation]);
 
-  
+  // Fetch station names
   const fetchStationNames = useCallback(async () => {
     try {
       if (!publicToken) return;
@@ -86,9 +94,9 @@ const Home = () => {
     }
   }, [publicToken, fetchWithTokenRefresh]);
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
-      await fetchToken(); 
+      await fetchToken();
       fetchTrainData();
       fetchStationNames();
     };
@@ -104,7 +112,7 @@ const Home = () => {
 
   useEffect(() => {
     if (isSearching) {
-      setTrains(searchResults); 
+      setTrains(searchResults);
     }
   }, [searchResults, isSearching]);
 
@@ -113,7 +121,8 @@ const Home = () => {
 
   const handleSearch = async () => {
     if (startStation && endStation) {
-      setIsSearching(true); 
+      setIsSearching(true);
+      setSearchParams({ startStation, endStation });
       try {
         const data = await fetchWithTokenRefresh(
           `http://localhost:3000/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}`,
@@ -123,9 +132,9 @@ const Home = () => {
             }
           }
         );
-        setSearchResults(data); 
-        setStartStation(''); 
-        setEndStation(''); 
+        setSearchResults(data);
+        //setStartStation('');
+        //setEndStation('');
       } catch (error) {
         console.error('Error fetching filtered trains:', error.message);
       }
