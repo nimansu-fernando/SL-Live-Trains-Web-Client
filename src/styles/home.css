@@ -106,24 +106,34 @@
     background-color: #0056b3;
 }
 
-.pagination-container {
-  text-align: center;
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 20px;
 }
 
-.pagination-container .page-number {
-  display: inline-block;
-  margin: 0 5px; /* Add space between page numbers */
-  padding: 8px 12px;
-  background-color: #f8f8f8;
-  border-radius: 5px;
+.pagination-button {
+  margin: 0 5px;
+  padding: 10px 15px;
+  border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.pagination-container .page-number:hover {
+.pagination-button:hover {
   background-color: #007bff;
   color: white;
+}
+
+.pagination-button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.pagination-button:disabled {
+  cursor: not-allowed;
+  background-color: #e9ecef;
+  color: #6c757d;
 }
 
   /* Responsive Design */

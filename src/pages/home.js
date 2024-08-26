@@ -20,7 +20,7 @@ const Home = () => {
   const [searchParams, setSearchParams] = useState({ startStation: '', endStation: '' });
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [pageSize, setPageSize] = useState(5); // Number of trains per page
+  const [pageSize, setPageSize] = useState(10); 
 
   // Fetch current token
   const fetchToken = useCallback(async () => {
@@ -138,8 +138,8 @@ const Home = () => {
           }
         );
         setSearchResults(data);
-        setCurrentPage(1); // Reset to the first page on new search
-        setTotalPages(data.totalPages); // Update total pages
+        setCurrentPage(1); 
+        setTotalPages(data.totalPages); 
       } catch (error) {
         console.error('Error fetching filtered trains:', error.message);
       }
@@ -151,8 +151,48 @@ const Home = () => {
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
-      fetchTrainData(); // Fetch data for the new page
+      fetchTrainData(); 
     }
+  };
+
+  const renderPagination = () => {
+    const pageButtons = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageButtons.push(
+        <Button
+          key={i}
+          variant={i === currentPage ? 'primary' : 'secondary'}
+          onClick={() => handlePageChange(i)}
+          className={`pagination-button ${i === currentPage ? 'active' : ''}`}
+        >
+          {i}
+        </Button>
+      );
+    }
+
+    return (
+      <div className="pagination-controls">
+        {currentPage > 1 && (
+          <Button
+            variant="secondary"
+            onClick={() => handlePageChange(currentPage - 1)}
+            className="pagination-button"
+          >
+            Previous
+          </Button>
+        )}
+        {pageButtons}
+        {currentPage < totalPages && (
+          <Button
+            variant="secondary"
+            onClick={() => handlePageChange(currentPage + 1)}
+            className="pagination-button"
+          >
+            Next
+          </Button>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -206,23 +246,7 @@ const Home = () => {
           <TrainCard key={index} train={train} />
         ))}
       </div>
-      <div className="pagination-controls">
-        <Button 
-          variant="secondary" 
-          onClick={() => handlePageChange(currentPage - 1)} 
-          disabled={currentPage === 1}
-        >
-          Previous
-        </Button>
-        <span> Page {currentPage} of {totalPages} </span>
-        <Button 
-          variant="secondary" 
-          onClick={() => handlePageChange(currentPage + 1)} 
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </Button>
-      </div>
+      {!isSearching && renderPagination()}
       <Modal show={modalIsOpen} onHide={closeModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Current Train Locations</Modal.Title>
