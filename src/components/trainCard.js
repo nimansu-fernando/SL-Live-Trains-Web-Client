@@ -10,7 +10,7 @@ const TrainCard = ({ train }) => {
   };
 
   const frequencyMap = {
-    daily: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    daily: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Sat", "Sun"],
     holiday: ["Holiday"],
     weekday: ["Mon", "Tue", "Wed", "Thu", "Fri"],
     weekend: ["Sat", "Sun"],
