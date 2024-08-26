@@ -19,6 +19,11 @@ const Home = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchParams, setSearchParams] = useState({ startStation: '', endStation: '' });
 
+  const [currentPage, setCurrentPage] = useState(1); // Pagination: Current page
+  const [totalPages, setTotalPages] = useState(1);   // Pagination: Total pages
+
+  const ITEMS_PER_PAGE = 5;  // Set how many items to display per page
+
   // Fetch current token
   const fetchToken = useCallback(async () => {
     try {
@@ -56,28 +61,31 @@ const Home = () => {
     }
   }, [fetchToken, publicToken]);
 
-  // Fetch train data
+  // Fetch train data with pagination
   const fetchTrainData = useCallback(async () => {
     try {
       if (!publicToken) return;
       const url = isSearching
-        ? `http://localhost:3000/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}`
-        : 'http://localhost:3000/api/v1/location/train-locations/data';
+        ? `http://localhost:3000/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}&page=${currentPage}&limit=${ITEMS_PER_PAGE}`
+        : `http://localhost:3000/api/v1/location/train-locations/data?page=${currentPage}&limit=${ITEMS_PER_PAGE}`;
 
       const data = await fetchWithTokenRefresh(url, {
         headers: {
           'x-public-token': publicToken
         }
       });
+
       if (isSearching) {
-        setSearchResults(data);
+        setSearchResults(data.data);
+        setTotalPages(data.totalPages);
       } else {
-        setTrains(data);
+        setTrains(data.data);
+        setTotalPages(data.totalPages);
       }
     } catch (error) {
       console.error('Error fetching train data:', error.message);
     }
-  }, [publicToken, fetchWithTokenRefresh, isSearching, startStation, endStation]);
+  }, [publicToken, fetchWithTokenRefresh, isSearching, startStation, endStation, currentPage]);
 
   // Fetch station names
   const fetchStationNames = useCallback(async () => {
@@ -125,22 +133,26 @@ const Home = () => {
       setSearchParams({ startStation, endStation });
       try {
         const data = await fetchWithTokenRefresh(
-          `http://localhost:3000/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}`,
+          `http://localhost:3000/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}&page=${currentPage}&limit=${ITEMS_PER_PAGE}`,
           {
             headers: {
               'x-public-token': publicToken
             }
           }
         );
-        setSearchResults(data);
-        //setStartStation('');
-        //setEndStation('');
+        setSearchResults(data.data);
+        setTotalPages(data.totalPages);
       } catch (error) {
         console.error('Error fetching filtered trains:', error.message);
       }
     } else {
       alert('Please select both start and destination stations.');
     }
+  };
+
+  // Handle page change
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
   return (
@@ -192,6 +204,17 @@ const Home = () => {
       <div className="container train-card-container">
         {trains.map((train, index) => (
           <TrainCard key={index} train={train} />
+        ))}
+      </div>
+      <div className="pagination-container">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <span
+            key={i}
+            className={`page-number ${currentPage === i + 1 ? 'active' : ''}`}
+            onClick={() => handlePageChange(i + 1)}
+          >
+            {i + 1}
+          </span>
         ))}
       </div>
       <Modal show={modalIsOpen} onHide={closeModal} centered>
