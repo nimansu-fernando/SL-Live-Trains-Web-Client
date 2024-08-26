@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import '../styles/home.css';
 import TrainCard from '../components/trainCard.js';
 import Modal from 'react-bootstrap/Modal';
@@ -14,66 +14,120 @@ const Home = () => {
   const [startStation, setStartStation] = useState('');
   const [endStation, setEndStation] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [publicToken, setPublicToken] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
-  // Function to fetch train data
-  const fetchTrainData = async () => {
+  // fetch current token
+  const fetchToken = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/location/train-locations/data');
+      const response = await fetch('http://localhost:3000/api/public-token');
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
-      setTrains(data);
+      setPublicToken(data.token);
+    } catch (error) {
+      console.error('Error fetching public token:', error.message);
+    }
+  }, []);
+
+  // fetch token refresh
+  const fetchWithTokenRefresh = useCallback(async (url, options = {}) => {
+    try {
+      const response = await fetch(url, options);
+      if (response.status === 401 || response.status === 403) {
+        await fetchToken(); 
+        options.headers['x-public-token'] = publicToken; 
+        const retryResponse = await fetch(url, options); 
+        if (!retryResponse.ok) {
+          throw new Error(`HTTP error on retry! Status: ${retryResponse.status}`);
+        }
+        return retryResponse.json();
+      }
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching data:', error.message);
+      throw error;
+    }
+  }, [fetchToken, publicToken]);
+
+    const fetchTrainData = useCallback(async () => {
+    try {
+      if (!publicToken) return;
+      const data = await fetchWithTokenRefresh('http://localhost:3000/api/v1/location/train-locations/data', {
+        headers: {
+          'x-public-token': publicToken
+        }
+      });
+      if (!isSearching) {
+        setTrains(data); 
+      }
     } catch (error) {
       console.error('Error fetching train data:', error.message);
     }
-  };
+  }, [publicToken, fetchWithTokenRefresh, isSearching]);
+
   
-
-  // Function to fetch station names
-  const fetchStationNames = async () => {
+  const fetchStationNames = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/railway-infrastructure/stations/names/order');
-      if (response.ok) {
-        const data = await response.json();
-        setStations(data);
-      } else {
-        console.error('Failed to fetch station names:', response.statusText);
-      }
+      if (!publicToken) return;
+      const data = await fetchWithTokenRefresh('http://localhost:3000/api/railway-infrastructure/stations/names/order', {
+        headers: {
+          'x-public-token': publicToken
+        }
+      });
+      setStations(data);
     } catch (error) {
-      console.error('Error fetching station names:', error);
+      console.error('Error fetching station names:', error.message);
     }
-  };
+  }, [publicToken, fetchWithTokenRefresh]);
 
-  // Fetch data on component mount
-  useEffect(() => {
-    fetchTrainData();
-    fetchStationNames();
+    useEffect(() => {
+    const fetchData = async () => {
+      await fetchToken(); 
+      fetchTrainData();
+      fetchStationNames();
+    };
 
-    // Set up interval to update train data every 30 seconds
-    const intervalId = setInterval(fetchTrainData, 30000);
+    fetchData();
 
-    // Clean up interval on component unmount
+    const intervalId = setInterval(() => {
+      fetchTrainData();
+    }, 30000);
+
     return () => clearInterval(intervalId);
-  }, []);
+  }, [fetchToken, fetchTrainData, fetchStationNames]);
+
+  useEffect(() => {
+    if (isSearching) {
+      setTrains(searchResults); 
+    }
+  }, [searchResults, isSearching]);
 
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
 
   const handleSearch = async () => {
     if (startStation && endStation) {
+      setIsSearching(true); 
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}`
+        const data = await fetchWithTokenRefresh(
+          `http://localhost:3000/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}`,
+          {
+            headers: {
+              'x-public-token': publicToken
+            }
+          }
         );
-        if (response.ok) {
-          const data = await response.json();
-          setTrains(data);
-        } else {
-          console.error('Failed to fetch filtered trains:', response.statusText);
-        }
+        setSearchResults(data); 
+        setStartStation(''); 
+        setEndStation(''); 
       } catch (error) {
-        console.error('Error fetching filtered trains:', error);
+        console.error('Error fetching filtered trains:', error.message);
       }
     } else {
       alert('Please select both start and destination stations.');
