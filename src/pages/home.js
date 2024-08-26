@@ -18,11 +18,9 @@ const Home = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchParams, setSearchParams] = useState({ startStation: '', endStation: '' });
-
-  const [currentPage, setCurrentPage] = useState(1); // Pagination: Current page
-  const [totalPages, setTotalPages] = useState(1);   // Pagination: Total pages
-
-  const ITEMS_PER_PAGE = 5;  // Set how many items to display per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [pageSize, setPageSize] = useState(5); // Number of trains per page
 
   // Fetch current token
   const fetchToken = useCallback(async () => {
@@ -61,13 +59,13 @@ const Home = () => {
     }
   }, [fetchToken, publicToken]);
 
-  // Fetch train data with pagination
+  // Fetch train data
   const fetchTrainData = useCallback(async () => {
     try {
       if (!publicToken) return;
       const url = isSearching
-        ? `http://localhost:3000/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}&page=${currentPage}&limit=${ITEMS_PER_PAGE}`
-        : `http://localhost:3000/api/v1/location/train-locations/data?page=${currentPage}&limit=${ITEMS_PER_PAGE}`;
+        ? `http://localhost:3000/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}`
+        : `http://localhost:3000/api/v1/location/train-locations/data?page=${currentPage}&limit=${pageSize}`;
 
       const data = await fetchWithTokenRefresh(url, {
         headers: {
@@ -76,8 +74,7 @@ const Home = () => {
       });
 
       if (isSearching) {
-        setSearchResults(data.data);
-        setTotalPages(data.totalPages);
+        setSearchResults(data);
       } else {
         setTrains(data.data);
         setTotalPages(data.totalPages);
@@ -85,7 +82,7 @@ const Home = () => {
     } catch (error) {
       console.error('Error fetching train data:', error.message);
     }
-  }, [publicToken, fetchWithTokenRefresh, isSearching, startStation, endStation, currentPage]);
+  }, [publicToken, fetchWithTokenRefresh, isSearching, startStation, endStation, currentPage, pageSize]);
 
   // Fetch station names
   const fetchStationNames = useCallback(async () => {
@@ -133,15 +130,16 @@ const Home = () => {
       setSearchParams({ startStation, endStation });
       try {
         const data = await fetchWithTokenRefresh(
-          `http://localhost:3000/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}&page=${currentPage}&limit=${ITEMS_PER_PAGE}`,
+          `http://localhost:3000/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}`,
           {
             headers: {
               'x-public-token': publicToken
             }
           }
         );
-        setSearchResults(data.data);
-        setTotalPages(data.totalPages);
+        setSearchResults(data);
+        setCurrentPage(1); // Reset to the first page on new search
+        setTotalPages(data.totalPages); // Update total pages
       } catch (error) {
         console.error('Error fetching filtered trains:', error.message);
       }
@@ -150,9 +148,11 @@ const Home = () => {
     }
   };
 
-  // Handle page change
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+      fetchTrainData(); // Fetch data for the new page
+    }
   };
 
   return (
@@ -206,16 +206,22 @@ const Home = () => {
           <TrainCard key={index} train={train} />
         ))}
       </div>
-      <div className="pagination-container">
-        {Array.from({ length: totalPages }, (_, i) => (
-          <span
-            key={i}
-            className={`page-number ${currentPage === i + 1 ? 'active' : ''}`}
-            onClick={() => handlePageChange(i + 1)}
-          >
-            {i + 1}
-          </span>
-        ))}
+      <div className="pagination-controls">
+        <Button 
+          variant="secondary" 
+          onClick={() => handlePageChange(currentPage - 1)} 
+          disabled={currentPage === 1}
+        >
+          Previous
+        </Button>
+        <span> Page {currentPage} of {totalPages} </span>
+        <Button 
+          variant="secondary" 
+          onClick={() => handlePageChange(currentPage + 1)} 
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </Button>
       </div>
       <Modal show={modalIsOpen} onHide={closeModal} centered>
         <Modal.Header closeButton>
