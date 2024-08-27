@@ -10,7 +10,7 @@ const TrainCard = ({ train }) => {
   };
 
   const frequencyMap = {
-    daily: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    daily: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Sat", "Sun"],
     holiday: ["Holiday"],
     weekday: ["Mon", "Tue", "Wed", "Thu", "Fri"],
     weekend: ["Sat", "Sun"],
@@ -43,14 +43,14 @@ const TrainCard = ({ train }) => {
     return `${hour12}:${minute} ${suffix}`;
   };
 
-  const convertIsoTo12HourTime = (isoString) => {
+  /*const convertIsoTo12HourTime = (isoString) => {
     const date = new Date(isoString);
     let hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, '0');
     const ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12 || 12;
     return `${hours}:${minutes} ${ampm}`;
-  };
+  };*/
 
   const convertDuration = (minutes) => {
     const hours = Math.floor(minutes / 60);
@@ -98,27 +98,27 @@ const TrainCard = ({ train }) => {
             <div className="last-update">
               <span className="update-label">Last Update:</span>
               <span className="update-value">{train.geoLocation}  |</span>
-              <span className="update-value">{convertIsoTo12HourTime(train.timestamp)}</span>
+              <span className="update-value">{new Date(train.timestamp).toLocaleTimeString()}</span>
             </div>
           </div>
         </div>
         {isExpanded && train.stopping_stations && (
-  <div className="stopping-stations">
-    <ul>
-      {train.stopping_stations.map((station, index) => (
-        <li key={index}>
-          <span className="station-name">{station.station_name || 'Unknown Station'}</span>
-          <span className="station-arrival">
-            Arrival: <span className="time">{station.arrival_time ? convertTo12HourFormat(station.arrival_time) : 'N/A'}</span>
-          </span>
-          <span className="station-departure">
-            Departure: <span className="time">{station.departure_time ? convertTo12HourFormat(station.departure_time) : 'N/A'}</span>
-          </span>
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
+            <div className="stopping-stations">
+              <ul>
+                {train.stopping_stations.map((station, index) => (
+                  <li key={index}>
+                    <span className="station-name">{station.station_name || 'Unknown Station'}</span>
+                    <span className="station-arrival">
+                      Arrival: <span className="time">{station.arrival_time ? convertTo12HourFormat(station.arrival_time) : 'N/A'}</span>
+                    </span>
+                    <span className="station-departure">
+                      Departure: <span className="time">{station.departure_time ? convertTo12HourFormat(station.departure_time) : 'N/A'}</span>
+                    </span>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

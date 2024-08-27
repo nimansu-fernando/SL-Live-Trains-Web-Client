@@ -140,8 +140,9 @@
 .stopping-stations-btn {
     background-color: #333;
     color: #fff;
+    font-size:0.9rem; 
     height: 30px;
-    padding: 8px 16px;
+    width: 160px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -240,6 +241,16 @@
         text-align: center; 
     }
 
+    .last-update .update-label {
+        font-size: 0.9rem; 
+        text-align: center;
+    }
+    
+    .last-update .update-value {
+        font-size: 0.9rem; 
+        text-align: center;
+    }
+
     .stopping-stations-btn {
         margin-bottom: 16px; 
     }
@@ -306,5 +317,15 @@
 
     .time {
         font-size: 1em; 
+    }
+
+    .last-update .update-label {
+        font-size: 0.8rem; 
+        text-align: center;
+    }
+    
+    .last-update .update-value {
+        font-size: 0.8rem; 
+        text-align: center;
     }
 }
