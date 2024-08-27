@@ -84,7 +84,25 @@
 
 .station-selection .form-control {
   flex: 1;
-  min-width: 150px; 
+  min-width: 150px;
+  height: 38px;
+  appearance: none; 
+  background-color: #ffffff;
+  min-width: 260px; 
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px; 
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  color: #495057;
+}
+
+.station-selection .form-control:focus {
+  border-color: #80bdff;
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  background-color: #ffffff; 
 }
 
 .search-button {
@@ -210,5 +228,21 @@
 
   .home-page {
     padding: 5px;
+  }
+}
+
+@media (max-width: 768px) {
+  .station-selection .form-control {
+    min-width: 200px;
+    height: 34px;
+    padding-right: 25px;
+  }
+}
+
+@media (max-width: 576px) {
+  .station-selection .form-control {
+    min-width: 150px;
+    height: 32px;
+    padding-right: 20px;
   }
 }
