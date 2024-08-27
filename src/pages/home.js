@@ -25,7 +25,7 @@ const Home = () => {
   // Fetch current token
   const fetchToken = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/public-token');
+      const response = await fetch('https://sllivetrains.com/api/public-token');
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -64,8 +64,8 @@ const Home = () => {
     try {
       if (!publicToken) return;
       const url = isSearching
-        ? `http://localhost:3000/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}`
-        : `http://localhost:3000/api/v1/location/train-locations/data?page=${currentPage}&limit=${pageSize}`;
+        ? `https://sllivetrains.com/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}`
+        : `https://sllivetrains.com/api/v1/location/train-locations/data?page=${currentPage}&limit=${pageSize}`;
 
       const data = await fetchWithTokenRefresh(url, {
         headers: {
@@ -88,7 +88,7 @@ const Home = () => {
   const fetchStationNames = useCallback(async () => {
     try {
       if (!publicToken) return;
-      const data = await fetchWithTokenRefresh('http://localhost:3000/api/railway-infrastructure/stations/names/order', {
+      const data = await fetchWithTokenRefresh('https://sllivetrains.com/api/railway-infrastructure/stations/names/order', {
         headers: {
           'x-public-token': publicToken
         }
@@ -130,7 +130,7 @@ const Home = () => {
       setSearchParams({ startStation, endStation });
       try {
         const data = await fetchWithTokenRefresh(
-          `http://localhost:3000/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}`,
+          `https://sllivetrains.com/api/v1/location/train-locations/filter-trains?startStation=${encodeURIComponent(startStation)}&endStation=${encodeURIComponent(endStation)}`,
           {
             headers: {
               'x-public-token': publicToken
